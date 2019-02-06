@@ -87,14 +87,6 @@ public class ImportCSV {
         dao.salvar(cartoes);
 
         dao = new CartaoDAO();
-
-        try {
-            List<Cartao> list = dao.findAll();
-            System.out.println(list);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Problemas ao localizar contaton" + e.getLocalizedMessage());
-        }
-
         JOptionPane.showMessageDialog(null, "Dados importados com sucesso!");
     }
 

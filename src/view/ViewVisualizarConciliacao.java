@@ -1,11 +1,14 @@
 package view;
 
 import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.GroupLayout.Alignment;
+
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableModel;
+
+import dao.CartaoDAO;
+import domain.Cartao;
 
 /**
  *
@@ -23,7 +26,7 @@ public class ViewVisualizarConciliacao extends javax.swing.JFrame {
     }
     /**
      * variaveis static criadas para a tela poder ser fechada
-     * e elas não perderem seu valor 
+     * e elas nï¿½o perderem seu valor 
      */
     Boolean cadastrar = true;
     
@@ -82,6 +85,7 @@ public class ViewVisualizarConciliacao extends javax.swing.JFrame {
         //jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/projeto/dalvan/prbar/icones/import-icon (Custom).png"))); // NOI18N
         jButton2.setText("Voltar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
@@ -127,7 +131,7 @@ public class ViewVisualizarConciliacao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void tblClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblClienteKeyPressed
         
-        //Validação feita para se o usuario clicar na tecla enter ele excuta o
+        //Validaï¿½ï¿½o feita para se o usuario clicar na tecla enter ele excuta o
         if (evt.getKeyCode() == 10) {
             Integer linha = tblCliente.getSelectedRow();
             Integer id = Integer.parseInt(tblCliente.getValueAt(linha, 0).toString());
@@ -141,8 +145,8 @@ public class ViewVisualizarConciliacao extends javax.swing.JFrame {
     private void txtProcurarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProcurarKeyReleased
          /**
         *  acao feita para procurar um cliente na tabela atraves de seu nome
-        *  é criada uma String e ela é setada ,depois a classe ClienteDAO é instanciada 
-        * e é chamado o metodo getAllBuscarPorNome mandando o String
+        *  ï¿½ criada uma String e ela ï¿½ setada ,depois a classe ClienteDAO ï¿½ instanciada 
+        * e ï¿½ chamado o metodo getAllBuscarPorNome mandando o String
         */
 //        String nome = txtProcurar.getText();
 //        ClienteDAO dao = new ClienteDAO();
@@ -160,20 +164,24 @@ public class ViewVisualizarConciliacao extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
      /**
      *  Metodo utilizado para atualizar a tabela de clientes,
-     *  onde a classe ClienteDAO é instanciada e é chamado o
+     *  onde a classe ClienteDAO ï¿½ instanciada e ï¿½ chamado o
      * metodo get.all que retorna uma lista de clientes que
      * ja estao cadastrados no banco 
      */
     private void atualizar() {
-//        ClienteDAO dao = new ClienteDAO();
-//        List<Cliente> lista = dao.getAll();
-//        DefaultTableModel model = (DefaultTableModel) this.tblCliente.getModel();
-//        model.setRowCount(lista.size());
-//        for (int i = 0; i < lista.size(); i++) {
-//            model.setValueAt(lista.get(i).getIdCliente(), i, 0);
-//            model.setValueAt(lista.get(i).getNome(), i, 1);
-//            model.setValueAt(lista.get(i).getTelefone(), i, 2);
-//        }
+        CartaoDAO dao = new CartaoDAO();
+        try {
+            List<Cartao> lista = dao.findAll();
+            DefaultTableModel model = (DefaultTableModel) this.tblCliente.getModel();
+            model.setRowCount(lista.size());
+            for (int i = 0; i < lista.size(); i++) {
+                model.setValueAt(lista.get(i).getNrCartao(), i, 0);
+                model.setValueAt(lista.get(i).getBandeira(), i, 1);
+                model.setValueAt(lista.get(i).getTipoTransacao(), i, 2);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String args[]) {
@@ -202,6 +210,7 @@ public class ViewVisualizarConciliacao extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ViewVisualizarConciliacao().setVisible(true);
             }
